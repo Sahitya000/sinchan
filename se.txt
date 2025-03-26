@@ -1,0 +1,197 @@
+practical:1 blinking of LED
+
+
+void setup() {
+  pinMode(LED_BUILTIN, OUTPUT); // Corrected pinModel to pinMode
+}
+
+void loop() {
+  digitalWrite(LED_BUILTIN, HIGH); // Corrected digitalwhite to digitalWrite
+  delay(1000); // Keeps the LED on for 1 second
+  digitalWrite(LED_BUILTIN, LOW);  // Turns the LED off
+  delay(1000); // Keeps the LED off for 1 second
+}
+
+
+practical 2: program using light sensitive sensors
+
+int lightSensorValue = 0;  // Variable to store the light sensor reading 
+
+void setup() {
+  pinMode(A0, INPUT);   // Set A0 pin as an input for the light sensor
+  pinMode(9, OUTPUT);   // Set pin 9 as an output to control the LED
+  Serial.begin(9600);   // Initialize serial communication at 9600 baud
+}
+
+void loop() {
+  lightSensorValue = analogRead(A0);  // Read the light sensor value
+  Serial.println(lightSensorValue);   // Print the sensor value to the Serial Monitor
+  
+  int ledBrightness = map(lightSensorValue, 0, 1023, 0, 255);  // Map the sensor value to LED brightness
+  analogWrite(9, ledBrightness);  // Control LED brightness based on the sensor reading
+  
+  delay(100);  // Delay to stabilize the sensor readings
+}
+
+
+practical 3: program using temperature sensors
+
+const int sensor = A1;  // Pin for the temperature sensor
+void setup() {
+  pinMode(sensor, INPUT);  // Set the sensor pin as input
+  Serial.begin(9600);      // Initialize serial communication at 9600 baud
+}
+
+void loop() {
+  int temp = analogRead(sensor);  // Read the sensor value
+  float voltage = (temp * 5.0) / 1024;  // Convert the reading to voltage
+  float tempCel = (voltage - 0.5) * 100.0;  // Convert voltage to Celsius
+  
+  Serial.print("Celsius: ");
+  Serial.println(tempCel);  // Print the temperature in Celsius
+  
+  delay(1000);  // Wait for 1 second before reading again
+}
+
+
+practical 4: program using humidity sensor
+
+const int analogIn = A1;         // Pin for the humidity sensor output
+int humiditySensorOutput = 0;     // Variable to store the sensor value
+
+void setup() {
+  Serial.begin(9600);             // Start serial communication at 9600 baud
+}
+
+void loop() {
+  humiditySensorOutput = analogRead(analogIn);  // Read the humidity sensor value
+  
+  // Map the sensor value to a humidity percentage (you may need to adjust the 10 and 70)
+  int humidityPercentage = map(humiditySensorOutput, 0, 1023, 10, 70); 
+  
+  // Print the humidity percentage to the Serial Monitor
+  Serial.print("Humidity: ");
+  Serial.print(humidityPercentage);
+  Serial.println("%");
+  
+  delay(1000);  // Wait for 1 second before reading again
+}
+
+practical 5: program using ultra sonicsensors
+
+// Define the pins for the ultrasonic sensor
+const int trigPin = 9;  // Arduino digital pin for the trigger
+const int echoPin = 10; // Arduino digital pin for the echo
+
+// Variables to store the duration and distance
+long duration;  
+int distance; 
+
+void setup() {
+  // Initialize serial communication for debugging
+  Serial.begin(9600);
+
+  // Define the trigger and echo pins as OUTPUT and INPUT
+  pinMode(trigPin, OUTPUT); 
+  pinMode(echoPin, INPUT); 
+}
+
+void loop() {
+  // Trigger a pulse to the sensor
+  digitalWrite(trigPin, LOW); 
+  delayMicroseconds(2);          // Wait for 2 microseconds
+  digitalWrite(trigPin, HIGH);  
+  delayMicroseconds(10);         // Send a 10-microsecond pulse
+  digitalWrite(trigPin, LOW);   
+
+  // Measure the duration of the pulse from the echo
+  duration = pulseIn(echoPin, HIGH);  
+
+  // Calculate the distance based on the speed of sound
+  distance = duration * 0.034 / 2;  // Divide by 2 because the sound travels to the object and back
+
+  // Print the distance to the serial monitor
+  Serial.print("Distance: ");
+  Serial.print(distance); 
+  Serial.println(" cm");
+
+  // Add a delay between measurements
+  delay(1000);  // 1 second
+}
+
+
+practical 6: program using servo meter
+
+
+#include <Servo.h> 
+
+Servo servoBase; // Create a Servo object and assign it a specific name
+
+void setup() { 
+  servoBase.attach(A1);  // Specify the pin to use for the servo
+  servoBase.write(0);    // Set the servo motor to the 0-degree position
+} 
+
+void loop() { 
+  // Sweep the servo from 0 to 180 degrees in steps of 10 degrees
+  for (int i = 0; i <= 180; i += 10) { 
+    servoBase.write(i);   // Set the servo to the current angle
+    delay(2000);          // Pause for 2000 milliseconds (2 seconds)
+  } 
+ 
+}
+
+
+practical 7: program using digital infrared motion sensor
+
+int sensorState = 0; // Variable to store the state of the sensor
+
+void setup() {
+  pinMode(2, INPUT); // Set pin 2 as an input for the sensor
+  pinMode(LED_BUILTIN, OUTPUT); // Set the built-in LED pin as output
+}
+
+void loop() {
+  // Read the state of the sensor/digital input
+  sensorState = digitalRead(2);
+
+  // Check if the sensor pin is HIGH. If it is, turn the LED on
+  if (sensorState == HIGH) { 
+    digitalWrite(LED_BUILTIN, HIGH); // Turn the LED on
+  } else { 
+    digitalWrite(LED_BUILTIN, LOW); // Turn the LED off
+  }
+
+  // Delay for 10 milliseconds to improve simulation performance
+  delay(10);
+}
+
+
+practical 8:gas sensor
+
+int LED = A1; // Define LED pin
+int MQ2pin = A0; // Define MQ2 sensor pin
+
+void setup() { 
+  pinMode(LED, OUTPUT); // Set the LED pin as OUTPUT
+  Serial.begin(9600); // Start serial communication
+}
+
+void loop() {
+  float sensorValue; 
+  sensorValue = analogRead(MQ2pin); // Read the analog input from the MQ2 sensor
+  
+  if (sensorValue >= 470) { 
+    digitalWrite(LED, LOW); // Turn the LED off
+    Serial.print("Sensor Value: ");
+    Serial.print(sensorValue);
+    Serial.println(" | SMOKE DETECTED");
+  } else { 
+    digitalWrite(LED, HIGH); // Turn the LED on
+    Serial.print("Sensor Value: ");
+    Serial.println(sensorValue);
+  }  
+
+  delay(1000); // Pause for 1 second
+}
+
