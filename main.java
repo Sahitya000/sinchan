@@ -138,3 +138,241 @@ public class ActionEventExample {
 }
 
 
+practical 1: overloding
+
+public class Fruit {
+    private double fprice;
+    private String fname;
+
+    // Default constructor
+    Fruit() {
+        System.out.println("This Is Default Constructor");
+    }
+
+    // Overloaded constructor
+    Fruit(double fPrice, String fName) {
+        this.fprice = fPrice;
+        this.fname = fName;
+    }
+
+    // Copy constructor
+    Fruit(Fruit fruit) {
+        System.out.println("\nAfter invoking the Copy Constructor:\n");
+        this.fprice = fruit.fprice;
+        this.fname = fruit.fname;
+    }
+
+    // Method to show price
+    double showPrice() {
+        return fprice;
+    }
+
+    // Method to show name
+    String showName() {
+        return fname;
+    }
+
+    public static void main(String args[]) {
+        // Default constructor
+        Fruit f = new Fruit();
+
+        // Overloaded constructor
+        Fruit f1 = new Fruit(399, "Ruby Roman Grapes");
+        System.out.println("You are in Constructor Overloading");
+        System.out.println("Name of the first fruit: " + f1.showName());
+        System.out.println("Price of the first fruit: " + f1.showPrice());
+
+        // Copy constructor
+        Fruit f2 = new Fruit(f1);
+        System.out.println("Name of the second fruit: " + f2.showName());
+        System.out.println("Price of the second fruit: " + f2.showPrice());
+    }
+}
+
+
+
+practical 2: abstract class and method
+
+abstract class Shape {
+    // Abstract method for calculating area
+    public abstract double area();
+}
+
+class Circle extends Shape {
+    private double radius;
+
+    // Constructor to initialize the radius
+    public Circle(double radius) {
+        this.radius = radius;
+    }
+
+    // Implementation of the area method
+    @Override
+    public double area() {
+        return Math.PI * radius * radius;
+    }
+}
+
+public class Pract2B {
+    public static void main(String args[]) {
+        // Create an instance of Circle and call the area method
+        Circle c = new Circle(15.0);
+        System.out.println("Area of circle is: " + c.area());
+    }
+}
+
+
+practical 3:swing
+
+import java.io.*;
+import javax.swing.*;
+import java.awt.event.*;
+import javax.swing.filechooser.*;
+
+public class FileChooserExample extends JFrame implements ActionListener {
+    static JLabel label;
+
+    // Constructor
+    FileChooserExample() {
+    }
+
+    public static void main(String args[]) {
+        // Create the JFrame
+        JFrame frame = new JFrame("File Chooser Example");
+        frame.setSize(400, 400);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Create buttons
+        JButton saveButton = new JButton("Save");
+        JButton openButton = new JButton("Open");
+
+        // Create instance of FileChooserExample to handle events
+        FileChooserExample fileChooserExample = new FileChooserExample();
+        saveButton.addActionListener(fileChooserExample);
+        openButton.addActionListener(fileChooserExample);
+
+        // Create JPanel and add components
+        JPanel panel = new JPanel();
+        panel.add(saveButton);
+        panel.add(openButton);
+
+        label = new JLabel("No file selected");
+        panel.add(label);
+
+        frame.add(panel);
+        frame.setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent evt) {
+        String command = evt.getActionCommand();
+
+        if (command.equals("Save")) {
+            JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+            int response = fileChooser.showSaveDialog(null);
+            if (response == JFileChooser.APPROVE_OPTION) {
+                label.setText(fileChooser.getSelectedFile().getAbsolutePath());
+            } else {
+                label.setText("The user cancelled the operation.");
+            }
+        } else if (command.equals("Open")) {
+            JFileChooser fileChooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+            int response = fileChooser.showOpenDialog(null);
+            if (response == JFileChooser.APPROVE_OPTION) {
+                label.setText(fileChooser.getSelectedFile().getAbsolutePath());
+            } else {
+                label.setText("The user cancelled the operation.");
+            }
+        }
+    }
+}
+
+
+
+practical 4: border layout
+
+
+import java.awt.*; 
+import javax.swing.*; 
+
+class BorderDemo { 
+    JFrame f; 
+
+    // Constructor to set up the frame and layout
+    BorderDemo() { 
+        f = new JFrame("BorderLayout Demo"); 
+        
+        // Adding buttons to respective regions
+        JButton b1 = new JButton("NORTH"); 
+        JButton b2 = new JButton("SOUTH"); 
+        JButton b3 = new JButton("EAST"); 
+        JButton b4 = new JButton("WEST"); 
+        JButton b5 = new JButton("CENTER"); 
+        
+        f.add(b1, BorderLayout.NORTH); 
+        f.add(b2, BorderLayout.SOUTH); 
+        f.add(b3, BorderLayout.EAST); 
+        f.add(b4, BorderLayout.WEST); 
+        f.add(b5, BorderLayout.CENTER); 
+        
+        // Frame properties
+        f.setSize(300, 300); 
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+        f.setVisible(true); 
+    } 
+
+    public static void main(String[] args) { 
+        // Instantiate the BorderDemo to display the UI
+        new BorderDemo(); 
+    } 
+}
+
+
+
+practical 5: action event
+
+import java.awt.*; 
+import java.awt.event.*; 
+
+class ActEvent extends Frame implements ActionListener { 
+    TextField tf; 
+
+    // Constructor
+    ActEvent() { 
+        tf = new TextField(); 
+        tf.setBounds(60, 50, 170, 20); 
+        
+        Button b = new Button("Click Me"); 
+        b.setBounds(100, 120, 80, 30); 
+        b.addActionListener(this); 
+        
+        // Add components to frame
+        add(b); 
+        add(tf); 
+        
+        // Frame properties
+        setSize(300, 300); 
+        setLayout(null); 
+        setVisible(true); 
+    } 
+
+    @Override
+    public void actionPerformed(ActionEvent e) { 
+        // Set text in TextField upon button click
+        tf.setText("Welcome"); 
+    } 
+
+    public static void main(String args[]) { 
+        // Create an instance of ActEvent to display the frame
+        new ActEvent(); 
+    } 
+}
+
+
+
+
+
+
+
+
+
